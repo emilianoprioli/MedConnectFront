@@ -1,5 +1,4 @@
 "use client";
-
 import styles from "./page.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -14,7 +13,7 @@ export default function CardMed({ showMenu, searchResult }) {
 
   const fetchMedicos = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/medics",{email,password},{ withCredentials: true,credentials: 'include'});
+      const response = await axios.get("http://localhost:3001/medics");
       dispatch(getMedicos(response.data));
     } catch (error) {
       alert(error);

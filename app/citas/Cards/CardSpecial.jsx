@@ -11,6 +11,8 @@ export default function CardSpecial(){
   const dispatch = useDispatch();
   const especialidades = useSelector((state) => state.speciality.AllSpecial);
   const [especial,setEspecial]= useState([])
+  const[espeMed,setEspeMEd]=useState([])
+  const [medico,setMedico]= useState([])
   async function fetchData() {
     try {
       const response = await axios.get("http://localhost:3001/specializations");
@@ -21,20 +23,24 @@ export default function CardSpecial(){
     }
   }
   const handleClick =(event)=>{
+    const espeMed = medico.specializations.map(espe=>espe.name)
     const nameES = event.target.name;
-    if(nameES === 'All')setEspecial(especialidades)
-    else setEspecial(especialidades.filter(espe=>espe.name=== nameES))
+    if(nameES === 'All')setEspecial(especialidades.filter(espe => espeMed.includes(espe.name)))
+    else {setEspecial(especialidades.filter(espe=>espe.name=== nameES))
+    setEspeMEd(medico.specializations)
+    }
 
   }
   const handleClickMed =(event)=>{
-    
+    setMedico(event)
     const espeMed = event.specializations.map(espe=>espe.name)
     const data = especialidades.filter(espe => espeMed.includes(espe.name));
     setEspecial(data)
+    setEspeMEd(event.specializations)
   }
 
   useEffect(() => {
-    !especialidades.length ? fetchData(): setEspecial(especialidades);
+    !especialidades.length ? fetchData(): setEspeMEd(especialidades); setEspecial(especialidades)
     
   }, [especialidades]);
   
@@ -44,8 +50,9 @@ export default function CardSpecial(){
       <h2 className={styles.subTitle}>¿Quieres agendar con un profesional en particular?</h2>
       <CardMedics handleClickMed={handleClickMed}></CardMedics>
       
-      <h2 className={styles.subTitle}>Selecciona los servicios que deseas agendar:</h2>
-      <BottonEspe especialidades={especialidades} handleClick={handleClick}></BottonEspe>
+      {medico.id ?<h2 className={styles.subTitle}>Selecciona los servicios que deseas agendar del Dr. {medico.first_name+ ' ' +medico.last_name}:</h2>:<h2 className={styles.subTitle}>Selecciona los servicios que deseas agendar</h2>}
+
+      <BottonEspe especialidades={espeMed} handleClick={handleClick} ></BottonEspe>
       <div className={styles.box_espe}> 
         
           
