@@ -6,10 +6,11 @@ import { getMedicos } from '@/app/redux/reducer';
 import { use, useEffect, useState } from 'react';
 import FormItem from 'antd/es/form/FormItem';
 import { useRouter } from 'next/navigation';
-
+import styles from './page.module.css'
 
 export default function UserLogin() {
   const {logStatus,speciality} = useSelector(state => state)
+  const [alert,setAlert]= useState(false)
   const [registered,setRegistered] = useState(false)
   const [loading,setLoading] = useState(false);
   const dispatch = useDispatch()
@@ -33,7 +34,7 @@ console.log(logStatus.userStatus);
     const id = logStatus.userStatus.id
     setLoading(true);
     const {first_name,last_name,role,email,password} = values
-    console.log({first_name,last_name,role,email,password});
+    
     axios.post("http://localhost:3001/auth/register",{first_name,last_name,role,email,password,id})
     .then((res)=>{
         console.log(res.data);
@@ -51,11 +52,25 @@ console.log(logStatus.userStatus);
 
     //! this info must be send to the backend
   }
+  const FinishFailed=()=>{
+    setAlert(!alert)
 
-  if(logStatus.userStatus){
+  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAlert(false);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, [alert]);
+
+  if(logStatus){
     return (
-        <div >
-          <Form labelCol={{   span: 4, }} wrapperCol={{   span: 14, }} layout="horizontal" onFinish={(values)=>onSubmit(values)} >
+        <div className='max-w-[40%] mx-auto bg-white shadow-md rounded-md p-6 mt-20' >
+          {<div className={alert ? styles.alert : styles.alert_off} role="alert" onClick={FinishFailed}>
+        <p className="font-bold">¡Advertencia!</p>
+        <p>Corrija los campos por favor... de click a la alerta para borrarla. </p>
+      </div>}   <Form labelCol={{   span: 8, }} wrapperCol={{   span: 10, }} layout="horizontal" onFinish={(values)=>onSubmit(values)}onFinishFailed={FinishFailed} >
             <FormItem name="first_name" label="Nombre" rules={[
                 {required:true,
                 message:"Por favor ingrese su nombre"

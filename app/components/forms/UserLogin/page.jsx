@@ -13,7 +13,7 @@ export default function UserLogin() {
   //! hacer el navigate al home, aviso de login y 1 seg despues al home
   const onSubmit = async (values) => {
     const {email,password} = values
-    axios.post("http://localhost:3001/auth/login",{email,password},{ withCredentials: true,credentials: 'include'})
+    axios.post("http://localhost:3001/auth/login",{email,password} /*,{ withCredentials: true,credentials: 'include'}*/)
     .then((res)=>{
       if(res.data){
         dispatch(getLogStatus(res.data.data.user.role))
