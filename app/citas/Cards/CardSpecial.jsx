@@ -23,12 +23,23 @@ export default function CardSpecial(){
     }
   }
   const handleClick =(event)=>{
-    const espeMed = medico.specializations.map(espe=>espe.name)
     const nameES = event.target.name;
+    if(medico.id){
+      const espeMed = medico.specializations.map(espe=>espe.name)
+    
     if(nameES === 'All')setEspecial(especialidades.filter(espe => espeMed.includes(espe.name)))
     else {setEspecial(especialidades.filter(espe=>espe.name=== nameES))
     setEspeMEd(medico.specializations)
     }
+    }else{
+      if(nameES === 'All')setEspecial(especialidades)
+    else {
+    setEspecial(especialidades.filter(espe=>espe.name=== nameES))
+    }
+
+
+    }
+    
 
   }
   const handleClickMed =(event)=>{
@@ -43,13 +54,17 @@ export default function CardSpecial(){
     !especialidades.length ? fetchData(): setEspeMEd(especialidades); setEspecial(especialidades)
     
   }, [especialidades]);
-  
+  const buttonReset=()=>{
+    setEspeMEd(especialidades)
+    setEspecial(especialidades)
+    setMedico([])
+  }
     
   return(
-    <div>
+    <div className={styles.container}>
       <h2 className={styles.subTitle}>¿Quieres agendar con un profesional en particular?</h2>
       <CardMedics handleClickMed={handleClickMed}></CardMedics>
-      
+      <button onClick={buttonReset} className={styles.buttonReset}>Sin medico en particular</button>
       {medico.id ?<h2 className={styles.subTitle}>Selecciona los servicios que deseas agendar del Dr. {medico.first_name+ ' ' +medico.last_name}:</h2>:<h2 className={styles.subTitle}>Selecciona los servicios que deseas agendar</h2>}
 
       <BottonEspe especialidades={espeMed} handleClick={handleClick} ></BottonEspe>
@@ -58,11 +73,14 @@ export default function CardSpecial(){
           
 { especialidades.length ? especial.map((espe)=>{
   return(
-    <div key={espe.id} className={`max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${styles.cars_Espe}`}>
+    
+   <div key={espe.id} className={`max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ${styles.cars_Espe}`}>
+    <div>
   <Link href={`/specializations/${espe.id}`}>
       <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{espe.name}</h5>
   </Link>
   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{espe.description}</p>
+  </div>
   <button  className="inline-flex gap-2 items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       Agregar servicio 
       <svg className="h-5 w-5 text-white"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
