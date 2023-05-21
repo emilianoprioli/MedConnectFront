@@ -13,7 +13,7 @@ import { getMedicos } from '@/app/redux/reducer';
 import {useEffect, useState } from 'react';
 import FormItem from 'antd/es/form/FormItem';
 import { useRouter } from 'next/navigation';
-import styles from './page.module.css'
+
 
 const Turnos = () => {
   // let day = date["$d"].getDay()
