@@ -5,6 +5,7 @@ import axios from "axios";
 import {Button,Form,Input,Upload} from 'antd';
 import { Container } from "reactstrap";
 import Dropzone from "react-dropzone";
+import { SHA1 } from 'crypto-js';
 
 
 export default function SpecialtyForm() {
@@ -12,6 +13,7 @@ export default function SpecialtyForm() {
   const [image, setImage] = useState({array:[]})
   const [loading, setLoading] = useState ("")
   const [url, setUrl] = useState("")
+  const [publicId, setPublicId] = useState("")
 
 
   
@@ -24,10 +26,7 @@ export default function SpecialtyForm() {
       description, name, url
     }
     console.log(body);
-    // const formData = new FormData();
-    // formData.append("name", name);
-    // formData.append("image", image.fileList[0].originFileObj);
-    // formData.append("description", description);
+    
 
     axios
       .post("http://localhost:3001/specializations", body)
@@ -63,7 +62,7 @@ export default function SpecialtyForm() {
         specificArrayInObject.push(fileURL);
         const newobj ={...image, specificArrayInObject};
         setImage(newobj)
-        
+        setPublicId(data.public_id)
         
       })
     })
@@ -73,10 +72,41 @@ export default function SpecialtyForm() {
 
   }
 
-  // const deleteImag = ()=>{
-  //   axios.delete("https://api.cloudinary.com/v1_1/dipgqcdtq/image/upload")
-  //   setImage([])
-  // }
+  const generateSHA1 = (data) => {
+    return SHA1(data).toString();
+  };
+
+  const generateSinature = (publicId, apiSecret) =>{
+    const timestamp = new Date().getTime()
+    return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`
+  }
+
+
+  const  deleteImag = async ()=>{
+    
+      const url = "https://api.cloudinary.com/v1_1/dipgqcdtq/image/destroy";
+      const timestamp = new Date().getTime();
+      const apiKey ="977319699313977";
+      const apiSecret ="45snDqDmumENYPAmz0UET_PYGH4";
+      const signature = generateSHA1(generateSinature(publicId, apiSecret));
+
+
+      try {
+        const response = await axios.post(url, {
+          public_id: publicId,
+          signature: signature,
+          api_key: apiKey,
+          timestamp: timestamp,
+        });
+        setImage({array:[]})
+        console.log(response);
+      } catch (error) {
+        console.error(error)
+        
+      }
+    
+    
+  };
 
   function imagePreview (){
     if(loading === "true"){
@@ -87,7 +117,7 @@ export default function SpecialtyForm() {
       return (
         <h3>
           {image.array.length <=0
-          ?"No Hay imagenes"
+          ?<h1>No Hay Imagen</h1>
           : image.array.map((items, index) => (
               <img
               alt= "Imagen"
@@ -121,29 +151,7 @@ export default function SpecialtyForm() {
                     placeholder="nombre..."/>
               </Form.Item>
 
-                {/* <Form.Item  name="image">
-                <Upload
-                  name="image"
-                  type="file"
-                  listType="picture-card"
-                  className="avatar-uploader"
-                >
-                  <div className={styles.icono}>
-                    <img
-                      src={"https://i.pinimg.com/originals/73/7e/c2/737ec290471f789e58b8e1e10cd45789.png"}
-                      alt="img"
-                      style={{
-                        width: '35%',
-                        aspectRatio: 1,
-                        margin: "0 auto",
-                        mixBlendMode:"color-burn",
-                        opacity: "0.8"
-                      }}
-                    />
-                  <p>Subir imagen</p>
-                  </div>
-              </Upload>
-                </Form.Item> */}
+              
               <Container>
                 <Dropzone
                 className="dropzone"
@@ -163,7 +171,7 @@ export default function SpecialtyForm() {
                     </section>
                   )}
                 </Dropzone>
-                {/* <button onClick={deleteImag} >Delete</button> */}
+                <button onClick={deleteImag} >Delete</button>
                 {imagePreview()}
               </Container>
       
