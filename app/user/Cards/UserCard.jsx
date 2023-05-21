@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import img from '../../citas/img/iconoMed.jpg'
 import Image from 'next/image';
 import Warning from '../../components/warning/Warning';
+
+
 export default function UserCard(){
     const [user, setUser] = useState({});
     const [isOpen, setIsOpen] = useState(false);
     const [contador,setContador]=useState(1)
     const [alertGet,setAlertGet]=useState(false)
-
+    
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -34,7 +36,7 @@ const [alert,setAlert]=useState(false)
 const FinishFailed=async()=>{
   if (contador === 2) {
     setAlert(!alert)
-    await axios.delete()
+    await axios.delete('localhost:3001/patients/2')
     setContador(1);
   } else {
     setContador(contador + 1);
