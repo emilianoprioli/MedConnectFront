@@ -20,7 +20,7 @@ export default function UserCard(){
 
 useEffect(() => {
   if (!user.id) {
-    axios.get('http://localhost:3001/patients/10')
+    axios.get('http://localhost:3001/patients/1')
       .then(res => {
         setUser(res.data);
       })
@@ -34,7 +34,7 @@ const [alert,setAlert]=useState(false)
 const FinishFailed=()=>{
   if (contador === 2) {
     setAlert(!alert)
-    console.log('hola')
+    
     setContador(1);
   } else {
     setContador(contador + 1);
