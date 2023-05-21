@@ -8,8 +8,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Medicos from "../Medicos";
 import styles from "./page.module.css";
-// const backendURL = process.env.PUBLIC_BACKEND_URL;
-const backendURL = "https://medconnectback-production.up.railway.app";
+const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+// const backendURL = "https://medconnectback-production.up.railway.app";
 const specializationsURL = `${backendURL}/specializations`;
 const local = "http://localhost:3001/specializations";
 
@@ -21,7 +21,7 @@ export default function Page() {
 
   async function fetchData(id) {
     try {
-      const response = await axios.get(`${local}/${id}`);
+      const response = await axios.get(`${specializationsURL}/${id}`);
 
       dispatch(getId(response.data.data));
     } catch (error) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { searchBar, clearSearch, getSpeciality } from "../redux/reducer";
+import { searchBar } from "../redux/reducer";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
