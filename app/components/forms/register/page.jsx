@@ -4,11 +4,13 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import FormItem from 'antd/es/form/FormItem';
+import Warning from '../../warning/Warning';
 
 export default function UserLogin() {
   const {logStatus} = useSelector(state => state)
   const [registered,setRegistered] = useState(false)
   const [loading,setLoading] = useState(false);
+  const [alert, setAlert]= useState(false)
 
   useEffect(()=>{
     console.log(logStatus);
@@ -35,11 +37,16 @@ export default function UserLogin() {
 
     //! this info must be send to the backend
   }
+  const FinishFailed=()=>{
+    setAlert(!alert)
+
+  }
 
   if(!registered){
     return (
         <div >
-          <Form labelCol={{   span: 4, }} wrapperCol={{   span: 14, }} layout="horizontal" onFinish={(values)=>onSubmit(values)} >
+          <Warning alert={alert} text={'Corrija los campos por favor... de click a la alerta para borrarla.'} FinishFailed={FinishFailed}></Warning>
+          <Form labelCol={{   span: 4, }} wrapperCol={{   span: 14, }} layout="horizontal" onFinish={(values)=>onSubmit(values) }onFinishFailed={FinishFailed} >
             <Form.Item name="role" label="Usuario" 
             rules={[
               {required:true,

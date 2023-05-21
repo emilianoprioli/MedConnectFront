@@ -3,11 +3,14 @@ import {Button,Form,Input} from 'antd';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLogStatus,userChequer } from '@/app/redux/LogReducer';
+import {useState} from 'react'
 import { useRouter } from 'next/navigation';
 import style from "./login.module.css"
 import Link from 'next/link';
+import Warning from '../../warning/Warning';
 
 export default function UserLogin() {
+  const [alert, setAlert]=useState(false)
   const dispatch = useDispatch()
   const router = useRouter()
   //! hacer el navigate al home, aviso de login y 1 seg despues al home
@@ -26,9 +29,13 @@ export default function UserLogin() {
 
     //! this info must be send to the backend
   }
+  const FinishFailed=()=>{
+    setAlert(!alert)
+  }
 
   return (
   <div className={style.masterContainer}>
+    <Warning alert={alert} text={'Corrija los campos por favor... de click a la alerta para borrarla.'} FinishFailed={FinishFailed}></Warning>
     <div className={style.container}>
     <div className={style.components}>
       <div className={style.buttonContainer}>
@@ -36,7 +43,7 @@ export default function UserLogin() {
         <button id={style.facebook} className={style.button}>Facebook</button>
       </div>
       <div className={style.formContainer}>
-      <Form className={style.form} layout="vertical" onFinish={(values)=>onSubmit(values)} >
+      <Form className={style.form} layout="vertical" onFinish={(values)=>onSubmit(values)} onFinishFailed={FinishFailed} >
         <Form.Item name="email" label="Usuario"
         rules={[
           {required:true,
