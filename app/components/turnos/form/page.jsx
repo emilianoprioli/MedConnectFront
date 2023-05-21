@@ -3,11 +3,11 @@ import {Button,Form,Input,Radio,Alert} from 'antd';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMedicos } from '@/app/redux/reducer';
-import { use, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import FormItem from 'antd/es/form/FormItem';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css'
-
+import Warning from '../../warning/Warning';
 export default function UserLogin() {
   const {logStatus,speciality} = useSelector(state => state)
   const [alert,setAlert]= useState(false)
@@ -56,21 +56,13 @@ console.log(logStatus.userStatus);
     setAlert(!alert)
 
   }
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAlert(false);
-    }, 4000);
-
-    return () => clearTimeout(timer);
-  }, [alert]);
+  
 
   if(logStatus){
     return (
         <div className='max-w-[40%] mx-auto bg-white shadow-md rounded-md p-6 mt-20' >
-          {<div className={alert ? styles.alert : styles.alert_off} role="alert" onClick={FinishFailed}>
-        <p className="font-bold">¡Advertencia!</p>
-        <p>Corrija los campos por favor... de click a la alerta para borrarla. </p>
-      </div>}   <Form labelCol={{   span: 8, }} wrapperCol={{   span: 10, }} layout="horizontal" onFinish={(values)=>onSubmit(values)}onFinishFailed={FinishFailed} >
+          <Warning alert={alert} text={'Corrija los campos por favor... de click a la alerta para borrarla.'} FinishFailed={FinishFailed}></Warning>
+             <Form labelCol={{   span: 8, }} wrapperCol={{   span: 10, }} layout="horizontal" onFinish={(values)=>onSubmit(values)}onFinishFailed={FinishFailed} >
             <FormItem name="first_name" label="Nombre" rules={[
                 {required:true,
                 message:"Por favor ingrese su nombre"

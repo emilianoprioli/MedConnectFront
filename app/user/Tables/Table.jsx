@@ -4,21 +4,23 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 export default function Table(){
     
-    const [user, setUser] = useState({});
+    const [userCitas, setUserCitas] = useState({});
     
 
 useEffect(() => {
-  if (!user.id) {
-    axios.get('http://localhost:3001/patients/1')
+  if (!userCitas.id) {
+    axios.get('http://localhost:3001/appointment')
       .then(res => {
-        setUser(res.data);
+        setUserCitas(res.data);
       })
       .catch(error => {
         alert('Error al obtener los datos del usuario:', error);
       });
   }
 }, []);
-const citas = user.id && user.appointments
+const citas = userCitas.length && userCitas.filter(cita => cita.patient.id =='1')
+console.log(citas);
+
     return(
         <div className={ style.table_cont +" relative overflow-x-auto shadow-md sm:rounded-lg"}>
             <h1 className={style.title + ' mb-8 text-4xl font-sans leading-none tracking-tighter text-neutral-600 md:text-7xl lg:text-5xl'}>Citas Agendadas</h1>
@@ -56,8 +58,8 @@ const citas = user.id && user.appointments
       {index + 1}
     </th>
     <td className="px-4 py-2">
-      {user.firstName} <br />
-      {user.lastName}
+      {cita.patient.firstName} <br />
+      {cita.patient.lastName}
     </td>
     <td className="px-6 py-4">
       {cita.scheduledDate}
