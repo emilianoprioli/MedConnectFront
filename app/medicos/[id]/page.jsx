@@ -9,7 +9,7 @@ import Warning from "../../components/warning/Warning";
 // const backendURL = process.env.PUBLIC_BACKEND_URL;
 const backendURL = "https://medconnectback-production.up.railway.app";
 const medicsURL = `${backendURL}/medics`;
-const local = "http://localhost:3001/medics";
+const local = "https://medconnectback-production.up.railway.app/medics";
 
 export default function Page() {
   const [error, setError] = useState({

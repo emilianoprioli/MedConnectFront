@@ -22,7 +22,7 @@ export default function Pacientes(){
     useEffect(() => {
       const fetchPatients = async () => {
         try {
-          const patientsResponse = await axios.get('http://localhost:3001/patients');
+          const patientsResponse = await axios.get('https://medconnectback-production.up.railway.app/patients');
          
     
           const patientsData = patientsResponse.data;
@@ -39,7 +39,7 @@ export default function Pacientes(){
     }, [isDelete]);
 
     const deletePaci =(id, isUser, email)=>{
-      const url = isUser ? 'http://localhost:3001/users/' :'http://localhost:3001/patients/';
+      const url = isUser ? 'https://medconnectback-production.up.railway.app/users/' :'https://medconnectback-production.up.railway.app/patients/';
       
         count == 2 && axios.delete(`${url}${id}`)
         .then(()=>{
@@ -120,7 +120,6 @@ export default function Pacientes(){
     </td>
   </tr>
 ))}
-            
 
         </tbody>
     </table></div>

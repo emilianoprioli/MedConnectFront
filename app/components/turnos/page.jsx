@@ -28,7 +28,7 @@ const randomDay = () => {
 };
 
 const añadirDia = async () => {
-  const response = await axios.get("http://localhost:3001/specializations");
+  const response = await axios.get("https://medconnectback-production.up.railway.app/specializations");
   const test = response?.data.map((obj) => {
     const selectedDay = randomDay();
     return { ...obj, selectedDay };

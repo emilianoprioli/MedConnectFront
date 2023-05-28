@@ -26,7 +26,7 @@ export default function CardMedics({ handleClickMed }) {
 
   const fetchMedicos = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/medics");
+      const response = await axios.get("https://medconnectback-production.up.railway.app/medics");
       
       dispatch(getMedicos(response.data));
     } catch (error) {

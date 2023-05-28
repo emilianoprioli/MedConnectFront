@@ -53,17 +53,17 @@ const dispatch = useDispatch()
   const UserLogout = links[4];
 
   const logoutGoogle = () => {
-    window.open("http://localhost:3001/auth/logout", "_self");
+    window.open("https://medconnectback-production.up.railway.app/auth/logout", "_self");
   };
   const logoutLocal = () => {
-    window.open("http://localhost:3001/auth/logoutLocal", "_self");
+    window.open("https://medconnectback-production.up.railway.app/auth/logoutLocal", "_self");
   };
   const onClickFunc=()=>{
     setClickUser(!clickUser)
 
   }
   useEffect(() => {
-    fetch("http://localhost:3001/auth/login/success", {
+    fetch("https://medconnectback-production.up.railway.app/auth/login/success", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -81,7 +81,7 @@ const dispatch = useDispatch()
       })
       .catch((err) => {});
 
-    fetch("http://localhost:3001/auth/loginn/success", {
+    fetch("https://medconnectback-production.up.railway.app/auth/loginn/success", {
       method: "GET",
       credentials: "include",
       headers: {

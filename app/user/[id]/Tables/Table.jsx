@@ -19,7 +19,7 @@ export default function Table({userCitas, setPut,put}){
     })
 
 const editCita =async(Med_id, status, Cita_id)=>{
-  const res = await axios.get('http://localhost:3001/medics')
+  const res = await axios.get('https://medconnectback-production.up.railway.app/medics')
   
   const medico = res.data.find(med=> med.user.id=== Med_id)
 
@@ -34,7 +34,7 @@ const editCita =async(Med_id, status, Cita_id)=>{
 
 const [totalCitas, setTotalCitas]=useState([])
 useEffect(()=>{
-  axios.get('http://localhost:3001/appointment')
+  axios.get('https://medconnectback-production.up.railway.app/appointment')
   .then(res=>{
     setTotalCitas(res.data)
   })

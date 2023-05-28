@@ -24,7 +24,7 @@ const HorasDisponibles =(date)=>{
 const fechaFormateada = `${año}-${mes}-${día}`;
 
   if (fechaFormateada.length) {
-    axios.get('http://localhost:3001/appointment')
+    axios.get('https://medconnectback-production.up.railway.app/appointment')
     .then((res)=>{
       const diasHorasFiltradas = res.data.filter(cita => cita.scheduledDate === fechaFormateada && cita.user.id === Med_id);
 const horariosFiltrados = horarios.filter(horario => !diasHorasFiltradas.some(cita => cita.scheduledTime === horario));
@@ -70,7 +70,7 @@ const horariosFiltrados = horarios.filter(horario => !diasHorasFiltradas.some(ci
 
 const fechaFormateada = `${año}-${mes}-${día}`;
 
-        axios.put("http://localhost:3001/appointment/"+id,{ scheduledDate: fechaFormateada, scheduledTime: scheduledTime, status:status },)
+        axios.put("https://medconnectback-production.up.railway.app/appointment/"+id,{ scheduledDate: fechaFormateada, scheduledTime: scheduledTime, status:status },)
           .then(() => {
             
             setPut(true)

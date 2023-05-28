@@ -11,7 +11,7 @@ import { getSpeciality } from "../redux/reducer";
 import Warning from "./warning/Warning";
 // const backendURL = process.env.PUBLIC_BACKEND_URL;
 const backendURL = "https://medconnectback-production.up.railway.app";
-const local = "http://localhost:3001";
+const local = "https://medconnectback-production.up.railway.app/";
 
 export default function Carrusel_Especialidades() {
   const dispatch = useDispatch();

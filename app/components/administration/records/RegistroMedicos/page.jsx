@@ -16,7 +16,7 @@ export default function Medicos(){
     useEffect(() => {
       const fetchPatients = async () => {
         try {
-          const response = await axios.get('http://localhost:3001/medics');
+          const response = await axios.get('https://medconnectback-production.up.railway.app/medics');
           setMedicos(response.data);
         } catch (err) {
           setError({ ...error, text: err.message, alert: true });
@@ -29,7 +29,7 @@ export default function Medicos(){
 
     const deleteMed =(id)=>{
       
-      const url = 'http://localhost:3001/user/';
+      const url = 'https://medconnectback-production.up.railway.app/user/';
       
       count == 2 && axios.delete(`${url}${id}`)
       .then(()=>{

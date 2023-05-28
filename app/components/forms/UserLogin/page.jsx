@@ -7,21 +7,23 @@ import { useRouter } from "next/navigation";
 import style from "./login.module.css";
 import Link from "next/link";
 import Warning from "../../warning/Warning";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function UserLogin() {
+  const userLocal = useSelector((state) => state.login.userLocal);
   const dispatch = useDispatch();
   const router = useRouter();
   const [error, setError] = useState({
     text: "",
     alert: false,
   });
+  const [log, setLog]=useState(false)
   //! hacer el navigate al home, aviso de login y 1 seg despues al home
   const onSubmit = async (values) => {
     const { email, password } = values;
     axios
       .post(
-        "http://localhost:3001/auth/login",
+        "https://medconnectback-production.up.railway.app/auth/login",
         { email, password },
         { withCredentials: true, credentials: "include" }
       )
@@ -29,20 +31,38 @@ export default function UserLogin() {
         if (res.data) {
           dispatch(getLogStatus(res.data.data.user.role));
           dispatch(userChequer(res.data.data));
-          router.push("/");
+          setLog(true)
+          
+            
         }
+          
       })
       .catch((error) => setError({...error,text:'No se a registrado ese usuario ',alert:true}))
 
     //! this info must be send to the backend
   };
-
+  
   const google = () => {
-    window.open("http://localhost:3001/auth/google", "_self");
+    window.open("https://medconnectback-production.up.railway.app/auth/google", "_self");
   };
   const FinishFailed = () => {
     setError({ ...error, text: "", alert: false });
   };
+  useEffect(()=>{
+    if (log && userLocal.id) {
+      
+      if(userLocal.role === 'medico'){
+        router.push("/PerfilMedico");
+  
+      }else if(userLocal.role === 'paciente'){
+        router.push("/user/"+userLocal.id);
+  
+      }else{
+        router.push("/");}
+      
+    }
+    
+  },[log, userLocal])
   return (
     <>
       <Warning

@@ -34,7 +34,7 @@ export default function EditPaciente ({setOpen, datos}){
       }
     return(
       <>
-      <></>
+      
        <Warning alert={error.alert} text={error.text} FinishFailed={FinishFailed}></Warning>
         <div className={styles.container}>
           

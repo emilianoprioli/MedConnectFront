@@ -24,7 +24,7 @@ export default function Especialidades(){
     useEffect(() => {
       const fetchPatients = async () => {
         try {
-          const response = await axios.get('http://localhost:3001/specializations');
+          const response = await axios.get('https://medconnectback-production.up.railway.app/specializations');
           setEspecialidades(response.data);
         } catch (err) {
           setError({ ...error, text: err.message, alert: true });
@@ -37,7 +37,7 @@ export default function Especialidades(){
 
     const deleteEsp =(id)=>{
       
-      const url = 'http://localhost:3001/specializations/';
+      const url = 'https://medconnectback-production.up.railway.app/specializations/';
       
       count == 2 && axios.delete(`${url}${id}`)
       .then(()=>{

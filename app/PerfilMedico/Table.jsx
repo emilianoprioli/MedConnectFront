@@ -17,7 +17,7 @@ export default function Table() {
     useEffect(() => {
        
         if (!citas.id){
-            axios.get('http://localhost:3001/appointment')
+            axios.get('https://medconnectback-production.up.railway.app/appointment')
             .then(res=>{
                 setCitas(res.data)
             })
@@ -34,7 +34,7 @@ export default function Table() {
     const handleCheckChange = async ( citaId, scheduledDate, scheduledTime, status) =>{
       
           
-          await axios.put(`http://localhost:3001/appointment/${citaId}`,{ 
+          await axios.put(`https://medconnectback-production.up.railway.app/appointment/${citaId}`,{ 
           scheduledDate: scheduledDate,
           scheduledTime:scheduledTime,  
           status:status

@@ -20,7 +20,7 @@ export default function UserLogin() {
     //! speciality has inside AllMedicos
 
   useEffect(()=>{
-    axios.get("http://localhost:3001/medics")
+    axios.get("https://medconnectback-production.up.railway.app/medics")
     .then((res)=>{
         dispatch(getMedicos(res.data));
     })
@@ -34,7 +34,7 @@ console.log(logStatus.userStatus);
     setLoading(true);
     const {first_name,last_name,role,email,password} = values
     console.log({first_name,last_name,role,email,password});
-    axios.post("http://localhost:3001/auth/register",{first_name,last_name,role,email,password,id})
+    axios.post("https://medconnectback-production.up.railway.app/auth/register",{first_name,last_name,role,email,password,id})
     .then((res)=>{
         console.log(res.data);
       if(res.data){

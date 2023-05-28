@@ -7,7 +7,7 @@ import {useSelector, useDispatch} from "react-redux"
 import axios from "axios"
 import { getSpeciality } from "../redux/reducer";
 import { Option } from 'antd/es/mentions';
-const local = "http://localhost:3001/specializations";
+const local = "https://medconnectback-production.up.railway.app/specializations";
 
 
 export default function Forms({userLocal}) {
