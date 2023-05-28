@@ -91,6 +91,7 @@ const dispatch = useDispatch()
       },
     })
       .then((response) => {
+        console.log(response.status);
         if (response.status === 200) return response.json();
         throw new Error("authentication has been failed!");
       })
