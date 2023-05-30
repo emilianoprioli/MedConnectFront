@@ -17,7 +17,7 @@ export default function User() {
 
   useEffect(() => {
     axios
-      .get("https://medconnectback-production.up.railway.app/users")
+      .get("http://localhost:3001users")
       .then((res) => {
         const citas = res.data;
 
