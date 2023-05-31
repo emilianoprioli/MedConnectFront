@@ -9,9 +9,9 @@ import { SHA1 } from "crypto-js";
 import Success from "@/app/components/success/Success";
 import Warning from "@/app/components/warning/Warning";
 const local =
-  "https://medconnectback-production.up.railway.app/specializations";
+  "http://localhost:3001/specializations";
 
-const backendURL = "https://medconnectback-production.up.railway.app";
+const backendURL = "http://localhost:3001";
 const specializationsURL = `${backendURL}/specializations`;
 
 export default function SpecialtyForm() {

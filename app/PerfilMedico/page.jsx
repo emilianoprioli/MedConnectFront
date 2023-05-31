@@ -9,7 +9,12 @@ import Table from "./Table";
 import style from "./page.module.css";
 import Forms from "./Forms";
 import FormsHor from "./FormHor";
-import FormCal from "./FormCal";
+import FormCal from "./FormCal"
+import FormsPut from "./FormsPut";
+import TableHorarios from "./TableHorarios"
+import Warning from "@/app/components/warning/Warning";
+import Success from "@/app/components/success/Success";
+
 
 export default function PerfilMedico() {
   // const [user, setUser] = useState({});
@@ -17,13 +22,50 @@ export default function PerfilMedico() {
   const [clickAct, setClickAct] = useState(false);
   const [clickHor, setClickHor] = useState(false);
   const [clickCal, setClickCal] = useState(false);
+  const [medicos, setMedicos] = useState([])
+  const [horarios, setHorarios] = useState([])
+  const [error, setError] = useState({
+    alert: false,
+    text: "Error al subir los datos",
+  });
+  const [success, setSuccess] = useState({
+    alert: false,
+    text: "Informacion subida con exito",
+  });
+  const [errorDelete, setErrorDelete] = useState({
+    alert: false,
+    text: "Error al eliminar el horario",
+  });
+  const [successDelete, setSuccessDelete] = useState({
+    alert: false,
+    text: "Eliminado exitosamente",
+  });
 
   const userLocal = useSelector((state) => state.login.userLocal);
 
+
+  //en filtromedico traigo todo lo de un medico
+  const filtromedico = medicos.filter(e=>e.user.id===userLocal.id)
+  const filtroHorarios = horarios?.filter(e=>e.medico.phone===filtromedico[0]?.phone)
+  
+  
+
   useEffect(() => {
+  if(!medicos.id){
+    axios
+        .get("http://localhost:3001/medics")
+        .then((res) => {
+          setMedicos(res.data);
+        })
+        .catch((error) => {
+          console.error( error);
+        });
+  }
+
+
     if (!citas.id) {
       axios
-        .get("https://medconnectback-production.up.railway.app/appointment")
+        .get("http://localhost:3001appointment")
         .then((res) => {
           setCitas(res.data);
         })
@@ -31,16 +73,26 @@ export default function PerfilMedico() {
           console.error(error);
         });
     }
-  }, []);
 
-  console.log("esto es citas", citas);
-  console.log("esto es userLocal", userLocal);
+    if (!horarios.id){
+      axios
+      .get("http://localhost:3001/schedule")
+      .then((res)=>{
+        setHorarios(res.data);
+      })
+      .catch((error)=>{
+        console.error(error)
+      })
+    }
+  }, [success,successDelete]);
+
+
 
   const getCitasPerfil = citas.filter(
     (e) => e.user.first_name === userLocal?.first_name
   );
 
-  console.log(getCitasPerfil);
+
 
   const handleClick = () => {
     if (clickAct === true) {
@@ -64,9 +116,38 @@ export default function PerfilMedico() {
       setClickCal(true);
     }
   };
+  const FinishFailed = () => {
+    setError({ ...error, alert: false });
+    setErrorDelete({ ...errorDelete, alert: false });
+  };
+  const successFunc = () => {
+    setSuccess({ ...success, alert: false });
+    setSuccessDelete({ ...successDelete, alert: false });
+
+  };
 
   return (
     <div className="flex flex-col">
+      <Warning
+        alert={error.alert}
+        text={error.text}
+        FinishFailed={FinishFailed}
+      ></Warning>
+      <Success
+        alert={success.alert}
+        text={success.text}
+        success={successFunc}
+      ></Success>
+       <Warning
+        alert={errorDelete.alert}
+        text={errorDelete.text}
+        FinishFailed={FinishFailed}
+      ></Warning>
+      <Success
+        alert={successDelete.alert}
+        text={successDelete.text}
+        success={successFunc}
+      ></Success>
       <div className="flex justify-around  mt-14">
         <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className="flex justify-end px-4 pt-4">
@@ -144,7 +225,8 @@ export default function PerfilMedico() {
               >
                 Actualizar Info
               </a>
-              <a
+              {filtromedico?.length
+                ?<a
                 onClick={() => {
                   handleClickHor();
                 }}
@@ -152,7 +234,11 @@ export default function PerfilMedico() {
               >
                 Horarios
               </a>
-              <a
+              :<div></div>
+              }
+              {
+                filtromedico?.length
+                ?<a
                 onClick={() => {
                   handleClickCal();
                 }}
@@ -160,29 +246,28 @@ export default function PerfilMedico() {
               >
                 Experencias
               </a>
+              :<div></div>
+              }
             </div>
+          </div>
+          <div>
+          {
+          filtroHorarios.length?<div><TableHorarios setSuccessDelete={setSuccessDelete} successDelete={successDelete} errorDelete={errorDelete} setErrorDelete={setErrorDelete} filtroHorarios={filtroHorarios}/></div>:<div></div>
+          }
           </div>
         </div>
 
         <Table getCitasPerfil={getCitasPerfil}></Table>
       </div>
-      <div>
-        {clickAct === true ? (
-          <Forms userLocal={userLocal}></Forms>
-        ) : (
-          <div></div>
-        )}{" "}
-        {clickHor === true ? (
-          <FormsHor userLocal={userLocal}></FormsHor>
-        ) : (
-          <div></div>
-        )}{" "}
-        {clickCal === true ? (
-          <FormCal userLocal={userLocal}></FormCal>
-        ) : (
-          <div></div>
-        )}
-      </div>
+
+      <div>{
+        filtromedico.length === 0
+        ?clickAct === true ? <Forms success={success} error={error} setSuccess={setSuccess} setError={setError} userLocal={userLocal} ></Forms> : <div></div>
+        :clickAct === true ? <FormsPut success={success} error={error} setSuccess={setSuccess} setError={setError} userLocal={userLocal} medico={filtromedico}></FormsPut> : <div></div>
+      }
+       {clickHor=== true ? <FormsHor success={success} error={error} setSuccess={setSuccess} setError={setError} userLocal={userLocal} filtromedico={filtromedico}></FormsHor> : <div></div>} 
+       {clickCal=== true ? <FormCal success={success} error={error} setSuccess={setSuccess} setError={setError} userLocal={userLocal} filtromedicos={filtromedico}></FormCal> : <div></div>}</div>
+
     </div>
   );
 }

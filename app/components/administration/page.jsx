@@ -6,9 +6,9 @@ import { getMedicos, getSpeciality } from "../../redux/reducer";
 import { getCitas } from "../../redux/CitaReducer";
 import { useEffect, useState } from "react";
 
-// const localSpec = "https://medconnectback-production.up.railway.app/specializations";
-// const localCitas = "https://medconnectback-production.up.railway.app/appointment";
-// const localMedic = "https://medconnectback-production.up.railway.app/medics";
+// const localSpec = "http://localhost:3001/specializations";
+// const localCitas = "http://localhost:3001/appointment";
+// const localMedic = "http://localhost:3001/medics";
 
 const backendURL = process.env.PUBLIC_BACKEND_URL;
 const specializationsURL = `${backendURL}/specializations`;
@@ -86,6 +86,7 @@ export default function Administration() {
     try {
       const responseCitas = await axios.get(citasURL, {
         withCredentials: true,
+        
       });
       const response = await axios.get(specializationsURL, {
         withCredentials: true,
@@ -101,6 +102,7 @@ export default function Administration() {
       alert(error.message);
     }
   }
+  const filtro = dataEsp.filter(e=>e.deletedAt===null)
 
   useEffect(() => {
     fetchData();
@@ -111,6 +113,8 @@ export default function Administration() {
     setDataCitas(citas);
     setDataMedics(medicos);
   }, [especialidades]);
+
+  console.log("estas son las citas", dataCitas);
 
   if (logStatus.logStatus === "admin" || userLocal.role === "admin") {
     return (
@@ -221,7 +225,7 @@ export default function Administration() {
                     <h2>Total de Medicos</h2>
                   </dd>
                   <dd className={styles.citas_con}>
-                    {dataEsp.length}
+                    {filtro.length}
                     <h2>Total de Especialidades</h2>
                   </dd>
                 </div>

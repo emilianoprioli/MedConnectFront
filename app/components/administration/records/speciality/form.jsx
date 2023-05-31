@@ -9,7 +9,7 @@ import { SHA1 } from "crypto-js";
 import Success from "@/app/components/success/Success";
 import Warning from "@/app/components/warning/Warning";
 
-const backendURL = "https://medconnectback-production.up.railway.app";
+const backendURL = "http://localhost:3001";
 const specializationsURL = `${backendURL}/specializations`;
 
 export default function form({ info }) {
@@ -30,7 +30,7 @@ export default function form({ info }) {
   const onSubmit = (values) => {
     setRegistered(!registered);
     const { description, name } = values;
-    //const local = `https://medconnectback-production.up.railway.app/specializations/${info.id}`;
+    //const local = `http://localhost:3001/specializations/${info.id}`;
     const data = `${specializationsURL}/${info.id}`;
     const body = {
       description,

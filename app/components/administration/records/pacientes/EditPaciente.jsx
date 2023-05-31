@@ -5,7 +5,7 @@ import Warning from "@/app/components/warning/Warning";
 import { useState } from "react";
 import { Button, Form, Input } from "antd";
 
-const backendURL = "https://medconnectback-production.up.railway.app";
+const backendURL = "http://localhost:3001";
 const patientsURL = `${backendURL}/patients`;
 
 export default function EditPaciente({ setOpen, datos }) {
