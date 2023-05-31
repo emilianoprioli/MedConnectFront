@@ -9,33 +9,9 @@ import { SHA1 } from "crypto-js";
 import Success from "@/app/components/success/Success";
 import Warning from "@/app/components/warning/Warning";
 import { useRouter } from "next/navigation";
-const backendURL = "https://medconnectback-production.up.railway.app";
+const backendURL = "http://localhost:3001";
 const specializationsURL = `${backendURL}/specializations`;
 import { useSelector } from "react-redux";
-
-export default function form({ info }) {
-  const nav = useRouter()
-  const { logStatus } = useSelector((state) => state);
-  const [registered, setRegistered] = useState(false);
-  const [image, setImage] = useState({ array: [info.url] });
-  const [loading, setLoading] = useState("");
-  const [url, setUrl] = useState("");
-  const [publicId, setPublicId] = useState("");
-  const [error, setError] = useState({
-    alert: false,
-    text: "Error al crear especialidad, el servidor esta caido o la especialidad ya existe",
-  });
-  const [success, setSuccess] = useState({
-    alert: false,
-    text: "Especialidad creada exitosamente",
-  });
-
-  
-  useEffect(()=>{
-    !logStatus.logStatus && nav.push("/components/forms/UserLogin");
-
-  },[logStatus])
-
 
 
 export default function form({info}) {
@@ -59,7 +35,7 @@ export default function form({info}) {
   const onSubmit = (values) => {
     setRegistered(!registered);
     const { description, name } = values;
-    //const local = `https://medconnectback-production.up.railway.app/specializations/${info.id}`;
+    //const local = `http://localhost:3001/specializations/${info.id}`;
     const data = `${specializationsURL}/${info.id}`;
     const body = {
       description,
@@ -296,4 +272,3 @@ export default function form({info}) {
         </div>
   )
 }
-
